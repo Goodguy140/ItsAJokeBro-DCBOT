@@ -9,8 +9,7 @@ import {
 import { Track } from './music/track';
 import { MusicSubscription } from './music/subscription';
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires, @typescript-eslint/no-require-imports
-const { token } = require('../auth.json');
+// eslint-disable-next-line @typescript-eslint/no-var-requires, @typescript-eslint/no-require-importss
 
 const client = new Discord.Client({ intents: ['GUILD_VOICE_STATES', 'GUILD_MESSAGES', 'GUILDS'] });
 
