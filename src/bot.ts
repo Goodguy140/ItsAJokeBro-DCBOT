@@ -8,11 +8,13 @@ import {
 } from '@discordjs/voice';
 import { Track } from './music/track';
 import { MusicSubscription } from './music/subscription';
+import { express } from 'express';
+const PORT = process.env.PORT || 5000
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires, @typescript-eslint/no-require-importss
 
 const client = new Discord.Client({ intents: ['GUILD_VOICE_STATES', 'GUILD_MESSAGES', 'GUILDS'] });
-
+express().listen(PORT, () => console.log(`Listening on ${ PORT }`))
 client.on('ready', () => console.log('Ready!'));
 
 // This contains the setup code for creating slash commands in a guild. The owner of the bot can send "!deploy" to create them.
