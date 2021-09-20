@@ -11,9 +11,8 @@ import { Track } from './music/track';
 import { MusicSubscription } from './music/subscription';
 const express = require('express')
 const path = require('path')
-
 const app = express()
-const server = app.listen(6969, () => {
+const server = app.listen(process.env.PORT || 5000, () => {
 	console.log(`Express running → PORT ${server.address().port}`);
   });
 app.get('/', (req, res) => {
@@ -116,6 +115,7 @@ client.on('interactionCreate', async (interaction: Interaction) => {
 		}
 
 		try {
+			interaction.deferReply()
 			// Attempt to create a Track from the user's video URL
 			const track = await Track.from(url, {
 				onStart() {
@@ -131,6 +131,7 @@ client.on('interactionCreate', async (interaction: Interaction) => {
 			});
 			// Enqueue the track and reply a success message to the user
 			subscription.enqueue(track);
+			await interaction.followUp(`Enqueued **${track.title}**`);
 			// await interaction.followUp(`Enqueued **${track.title}**`);
 		} catch (error) {
 			console.warn(error);
@@ -158,7 +159,6 @@ client.on('interactionCreate', async (interaction: Interaction) => {
 				.slice(0, 5)
 				.map((track, index) => `${index + 1}) ${track.title}`)
 				.join('\n');
-
 			await interaction.reply(`${current}\n\n${queue}`);
 		} else {
 			await interaction.reply('Not playing in this server!');
