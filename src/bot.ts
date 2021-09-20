@@ -1,4 +1,5 @@
-import Discord, { Interaction, GuildMember, Snowflake } from 'discord.js';
+import { Interaction, GuildMember, Snowflake } from 'discord.js';
+const Discord = require("discord.js")
 import {
 	AudioPlayerStatus,
 	AudioResource,
@@ -8,21 +9,18 @@ import {
 } from '@discordjs/voice';
 import { Track } from './music/track';
 import { MusicSubscription } from './music/subscription';
-import { Request, Response } from 'express'
 const express = require('express')
 const path = require('path')
-const PORT = process.env.PORT || 5000
 
-express()
-  .use(express.static(path.join(__dirname, 'public')))
-  .set('views', path.join(__dirname, 'views'))
-  .set('view engine', 'ejs')
-  .get('/', (req: Request, res: Response) => res.render('pages/index'))
-  .listen(PORT, () => console.log(`Listening on ${ PORT }`))
-// eslint-disable-next-line @typescript-eslint/no-var-requires, @typescript-eslint/no-require-importss
+const app = express()
+const server = app.listen(6969, () => {
+	console.log(`Express running → PORT ${server.address().port}`);
+  });
+app.get('/', (req, res) => {
+	res.send('Hello World!');
+});
 
 const client = new Discord.Client({ intents: ['GUILD_VOICE_STATES', 'GUILD_MESSAGES', 'GUILDS'] });
-express().listen(PORT, () => console.log(`Listening on ${ PORT }`))
 client.on('ready', () => console.log('Ready!'));
 
 // This contains the setup code for creating slash commands in a guild. The owner of the bot can send "!deploy" to create them.
