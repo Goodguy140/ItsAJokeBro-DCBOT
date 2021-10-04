@@ -25,7 +25,10 @@ var opts = {
   };
 
 const client = new Discord.Client({ intents: ['GUILD_VOICE_STATES', 'GUILD_MESSAGES', 'GUILDS'] });
-client.on('ready', () => console.log('Ready!'));
+client.on('ready', () => {
+	console.log('Ready!'));
+	client.user.setPresence({ activities: [{ name: 'Ready!' }], status: 'online' });
+}
 
 // This contains the setup code for creating slash commands in a guild. The owner of the bot can send "!deploy" to create them.
 client.on('messageCreate', async (message) => {
