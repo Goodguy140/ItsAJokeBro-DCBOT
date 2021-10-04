@@ -95,8 +95,9 @@ client.on('interactionCreate', async (interaction: Interaction) => {
 			  
 				console.dir(results);
 				var objResults = JSON.parse(results);
-				console.log(objResults);
-				console.log(objResults.link);
+				console.log("OBJECT RESULTS:" + objResults);
+				console.log("LINK SHOULD BE HERE : " + objResults.link);
+				console.log("LINK SHOULD BE HERE 222222222: " + results.link);
 				url = objResults.link;
 			  });
 		}
