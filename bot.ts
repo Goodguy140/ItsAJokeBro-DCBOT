@@ -212,4 +212,4 @@ client.on('interactionCreate', async (interaction: Interaction) => {
 
 client.on('error', console.warn);
 
-void client.login("NzY0OTkyNDEwOTQ5Nzc5NTA3.X4OUsw.Znh44qTg1qhWGuq54WC2hDYoOOs");
+void client.login();
