@@ -12,18 +12,18 @@ import { MusicSubscription } from './music/subscription';
 const express = require('express')
 const path = require('path')
 const app = express()
-var search = require('youtube-search');
+var url;
+import * as youtubeSearch from "youtube-search";
 const server = app.listen(process.env.PORT || 5000, () => {
 	console.log(`Express running → PORT ${server.address().port}`);
   });
 app.get('/', (req, res) => {
 	res.send('Hello World!');
 });
-var opts = {
+var opts: youtubeSearch.YouTubeSearchOptions = {
 	maxResults: 1,
-	key: 'AIzaSyDgrGH2QnpyujPEJKJywv8Tb0w8dnkHn58'
-  };
-
+	key: "AIzaSyDgrGH2QnpyujPEJKJywv8Tb0w8dnkHn58"
+ };
 const client = new Discord.Client({ intents: ['GUILD_VOICE_STATES', 'GUILD_MESSAGES', 'GUILDS'] });
 client.on('ready', () => {
 	console.log('Ready!');
@@ -84,22 +84,16 @@ const subscriptions = new Map<Snowflake, MusicSubscription>();
 client.on('interactionCreate', async (interaction: Interaction) => {
 	if (!interaction.isCommand() || !interaction.guildId) return;
 	let subscription = subscriptions.get(interaction.guildId);
-
-	if (interaction.commandName === 'play') {
-		var url = "";
-		//await interaction.defer();
+		if (interaction.commandName === 'play') {
 		// Extract the video URL from the command
 		if(interaction.options.get('song')!.value!.toString().includes("http")) {
 			url = interaction.options.get('song')!.value! as string;
 		} else {
 			const query = interaction.options.get('song')!.value! as string;
-			search(`${query}`, opts, function(err, results) {
+			await youtubeSearch(query, opts, (err, results) => {
 				if(err) return console.log(err);
-			  
-				console.dir(results);
-				var objResults = JSON.parse(results);
-				console.log(objResults);
-				console.log(objResults.link);
+				console.log("yes: " + results[0].link)
+				url = results[0].link
 			  });
 		}
 		
@@ -137,16 +131,16 @@ client.on('interactionCreate', async (interaction: Interaction) => {
 		}
 
 		try {
-			interaction.deferReply()
+			interaction.deferReply();
 			// Attempt to create a Track from the user's video URL
+			await new Promise(resolve => setTimeout(resolve, 10));
 			const track = await Track.from(url, {
 				onStart() {
 					interaction.followUp({ content: 'Now playing!', ephemeral: true }).catch(console.warn);
-					client.user.setPresence({ activities: [{ name: `${track.title}` }], status: 'online' });
+					client.user.setPresence({ activities: [{ name: `${track.title}` }], status: 'idle' });
 				},
 				onFinish() {
 					interaction.followUp({ content: 'Now finished!', ephemeral: true }).catch(console.warn);
-					client.user.setPresence({ activities: [{ name: '' }], status: 'idle' });
 				},
 				onError(error) {
 					console.warn(error);
