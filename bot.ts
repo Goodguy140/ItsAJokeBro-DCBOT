@@ -97,6 +97,7 @@ client.on('interactionCreate', async (interaction: Interaction) => {
 				var objResults = JSON.parse(results);
 				console.log(objResults);
 				console.log(objResults.link);
+				url = objResults.link;
 			  });
 		}
 		
@@ -211,4 +212,4 @@ client.on('interactionCreate', async (interaction: Interaction) => {
 
 client.on('error', console.warn);
 
-void client.login();
+void client.login("NzY0OTkyNDEwOTQ5Nzc5NTA3.X4OUsw.Znh44qTg1qhWGuq54WC2hDYoOOs");
