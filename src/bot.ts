@@ -124,7 +124,7 @@ client.on('interactionCreate', async (interaction: Interaction) => {
 				},
 				onFinish() {
 					interaction.followUp({ content: 'Now finished!', ephemeral: true }).catch(console.warn);
-					client.user.setPresence({ activities: [{ name: `` }], status: 'online' });
+					client.user.setPresence({ activities: [{ name: `` }], status: 'idle' });
 				},
 				onError(error) {
 					console.warn(error);
