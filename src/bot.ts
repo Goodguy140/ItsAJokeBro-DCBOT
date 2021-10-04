@@ -151,7 +151,7 @@ client.on('interactionCreate', async (interaction: Interaction) => {
 			});
 			// Enqueue the track and reply a success message to the user
 			subscription.enqueue(track);
-			// await interaction.followUp(`Enqueued **${track.title}**`);
+			await interaction.followUp(`Enqueued **${track.title}**`);
 		} catch (error) {
 			console.warn(error);
 			await interaction.reply('Failed to play track, please try again later!');
