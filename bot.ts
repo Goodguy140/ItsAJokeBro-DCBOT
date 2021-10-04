@@ -136,7 +136,7 @@ client.on('interactionCreate', async (interaction: Interaction) => {
 			// Attempt to create a Track from the user's video URL
 			const track = await Track.from(url, {
 				onStart() {
-					interaction.followUp({ content: 'Now playing!', ephemeral: true }).catch(console.warn);
+					//interaction.followUp({ content: 'Now playing!', ephemeral: true }).catch(console.warn);
 					client.user.setPresence({ activities: [{ name: `${track.title}` }], status: 'idle' });
 				},
 				onFinish() {
