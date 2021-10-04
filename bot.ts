@@ -91,9 +91,9 @@ client.on('interactionCreate', async (interaction: Interaction) => {
 		} else {
 			const query = interaction.options.get('song')!.value! as string;
 			search(`${query}`, opts, function(err, results) {
+				console.log("before error check")
 				if(err) return console.log(err);
-			  
-				console.dir(results);
+				console.log("after error check")
 				console.log("LINK SHOULD BE HERE 222222222: " + results.link);
 				url = results.link;
 			  });
