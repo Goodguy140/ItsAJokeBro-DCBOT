@@ -80,19 +80,25 @@ const subscriptions = new Map<Snowflake, MusicSubscription>();
 client.on('interactionCreate', async (interaction: Interaction) => {
 	if (!interaction.isCommand() || !interaction.guildId) return;
 	let subscription = subscriptions.get(interaction.guildId);
-
+	console.log("1")
 	if (interaction.commandName === 'play') {
+		console.log("2")
 		var url = "";
 		// Extract the video URL from the command
 		if(interaction.options.get('song')!.value!.toString().includes("http")) {
+			console.log("2.5")
 			url = interaction.options.get('song')!.value! as string;
 		} else {
+			console.log("3")
 			const query = interaction.options.get('song')!.value! as string;
+			console.log("4")
 			youtubeSearch(query, opts, (err, results) => {
+				console.log("5")
 				if(err) return console.log(err);
 				
 				console.log("made it!")
 				console.dir(results);
+				console.log("6")
 			  });
 		}
 		
