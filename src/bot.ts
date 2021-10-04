@@ -120,7 +120,13 @@ client.on('interactionCreate', async (interaction: Interaction) => {
 			const track = await Track.from(url, {
 				onStart() {
 					interaction.followUp({ content: 'Now playing!', ephemeral: true }).catch(console.warn);
-					client.user.SetPresence(`${track.title}`)
+					client.user.setPresence({
+						status: "online",  //You can show online, idle....
+						game: {
+						    name: `${track.title}`,  //The message shown
+						    type: "LISTENING" //PLAYING: WATCHING: LISTENING: STREAMING:
+						}
+					    });
 				},
 				onFinish() {
 					interaction.followUp({ content: 'Now finished!', ephemeral: true }).catch(console.warn);
