@@ -12,6 +12,7 @@ import { MusicSubscription } from './music/subscription';
 const express = require('express')
 const path = require('path')
 const app = express()
+var url;
 import * as youtubeSearch from "youtube-search";
 const server = app.listen(process.env.PORT || 5000, () => {
 	console.log(`Express running → PORT ${server.address().port}`);
@@ -24,7 +25,10 @@ var opts: youtubeSearch.YouTubeSearchOptions = {
 	key: "AIzaSyDgrGH2QnpyujPEJKJywv8Tb0w8dnkHn58"
  };
 const client = new Discord.Client({ intents: ['GUILD_VOICE_STATES', 'GUILD_MESSAGES', 'GUILDS'] });
-client.on('ready', () => console.log('Ready!'));
+client.on('ready', () => {
+	console.log('Ready!');
+	client.user.setPresence({ activities: [{ name: 'Ready!' }], status: 'online' });
+});
 
 // This contains the setup code for creating slash commands in a guild. The owner of the bot can send "!deploy" to create them.
 client.on('messageCreate', async (message) => {
@@ -80,25 +84,16 @@ const subscriptions = new Map<Snowflake, MusicSubscription>();
 client.on('interactionCreate', async (interaction: Interaction) => {
 	if (!interaction.isCommand() || !interaction.guildId) return;
 	let subscription = subscriptions.get(interaction.guildId);
-	console.log("1")
-	if (interaction.commandName === 'play') {
-		console.log("2")
-		var url = "";
+		if (interaction.commandName === 'play') {
 		// Extract the video URL from the command
 		if(interaction.options.get('song')!.value!.toString().includes("http")) {
-			console.log("2.5")
 			url = interaction.options.get('song')!.value! as string;
 		} else {
-			console.log("3")
 			const query = interaction.options.get('song')!.value! as string;
-			console.log("4")
-			youtubeSearch(query, opts, (err, results) => {
-				console.log("5")
+			await youtubeSearch(query, opts, (err, results) => {
 				if(err) return console.log(err);
-				
-				console.log("made it!")
-				console.dir(results);
-				console.log("6")
+				console.log("yes: " + results[0].link)
+				url = results[0].link
 			  });
 		}
 		
@@ -136,10 +131,12 @@ client.on('interactionCreate', async (interaction: Interaction) => {
 		}
 
 		try {
+			interaction.deferReply();
 			// Attempt to create a Track from the user's video URL
+			await new Promise(resolve => setTimeout(resolve, 10));
 			const track = await Track.from(url, {
 				onStart() {
-					//interaction.followUp({ content: 'Now playing!', ephemeral: true }).catch(console.warn);
+					interaction.followUp({ content: 'Now playing!', ephemeral: true }).catch(console.warn);
 					client.user.setPresence({ activities: [{ name: `${track.title}` }], status: 'idle' });
 				},
 				onFinish() {
@@ -152,7 +149,7 @@ client.on('interactionCreate', async (interaction: Interaction) => {
 			});
 			// Enqueue the track and reply a success message to the user
 			subscription.enqueue(track);
-			// await interaction.followUp(`Enqueued **${track.title}**`);
+			await interaction.followUp(`Enqueued **${track.title}**`);
 		} catch (error) {
 			console.warn(error);
 			await interaction.reply('Failed to play track, please try again later!');
