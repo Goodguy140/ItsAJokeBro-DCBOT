@@ -139,10 +139,11 @@ client.on('interactionCreate', async (interaction: Interaction) => {
 			const track = await Track.from(url, {
 				onStart() {
 					interaction.followUp({ content: 'Now playing!', ephemeral: true }).catch(console.warn);
-					client.user.setPresence({ activities: [{ name: `${track.title}` }], status: 'idle' });
+					client.user.setPresence({ activities: [{ name: `${track.title}` }], status: 'online' });
 				},
 				onFinish() {
 					interaction.followUp({ content: 'Now finished!', ephemeral: true }).catch(console.warn);
+					client.user.setPresence({ activities: [{ name: '' }], status: 'idle' });
 				},
 				onError(error) {
 					console.warn(error);
