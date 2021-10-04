@@ -120,7 +120,7 @@ client.on('interactionCreate', async (interaction: Interaction) => {
 			const track = await Track.from(url, {
 				onStart() {
 					interaction.followUp({ content: 'Now playing!', ephemeral: true }).catch(console.warn);
-					client.user.SetActivity(`${track.title}`)
+					client.user.SetPresence(`${track.title}`)
 				},
 				onFinish() {
 					interaction.followUp({ content: 'Now finished!', ephemeral: true }).catch(console.warn);
