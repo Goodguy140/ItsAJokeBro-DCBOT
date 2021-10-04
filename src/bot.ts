@@ -124,7 +124,7 @@ client.on('interactionCreate', async (interaction: Interaction) => {
 						status: "online",  //You can show online, idle....
 						game: {
 						    name: `${track.title}`,  //The message shown
-						    type: "LISTENING" //PLAYING: WATCHING: LISTENING: STREAMING:
+						    type: "PLAYING" //PLAYING: WATCHING: LISTENING: STREAMING:
 						}
 					    });
 				},
