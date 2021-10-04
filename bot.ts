@@ -12,18 +12,17 @@ import { MusicSubscription } from './music/subscription';
 const express = require('express')
 const path = require('path')
 const app = express()
-var search = require('youtube-search');
+import * as youtubeSearch from "youtube-search";
 const server = app.listen(process.env.PORT || 5000, () => {
 	console.log(`Express running → PORT ${server.address().port}`);
   });
 app.get('/', (req, res) => {
 	res.send('Hello World!');
 });
-var opts = {
+var opts: youtubeSearch.YouTubeSearchOptions = {
 	maxResults: 1,
-	key: 'AIzaSyDgrGH2QnpyujPEJKJywv8Tb0w8dnkHn58'
-  };
-
+	key: "AIzaSyDgrGH2QnpyujPEJKJywv8Tb0w8dnkHn58"
+ };
 const client = new Discord.Client({ intents: ['GUILD_VOICE_STATES', 'GUILD_MESSAGES', 'GUILDS'] });
 client.on('ready', () => console.log('Ready!'));
 
@@ -89,7 +88,12 @@ client.on('interactionCreate', async (interaction: Interaction) => {
 			url = interaction.options.get('song')!.value! as string;
 		} else {
 			const query = interaction.options.get('song')!.value! as string;
-			console.log(query)
+			youtubeSearch(query, opts, (err, results) => {
+				if(err) return console.log(err);
+				
+				console.log("made it!")
+				console.dir(results);
+			  });
 		}
 		
 
