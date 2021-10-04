@@ -83,6 +83,7 @@ client.on('interactionCreate', async (interaction: Interaction) => {
 	let subscription = subscriptions.get(interaction.guildId);
 
 	if (interaction.commandName === 'play') {
+		interaction.deferReply()
 		var url = "";
 		//await interaction.defer();
 		// Extract the video URL from the command
@@ -136,7 +137,6 @@ client.on('interactionCreate', async (interaction: Interaction) => {
 		}
 
 		try {
-			interaction.deferReply()
 			// Attempt to create a Track from the user's video URL
 			const track = await Track.from(url, {
 				onStart() {
