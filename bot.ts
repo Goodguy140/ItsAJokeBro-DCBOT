@@ -94,7 +94,7 @@ client.on('interactionCreate', async (interaction: Interaction) => {
 				if(err) return console.log(err);
 			  
 				console.dir(results);
-				var objResults = JSON.parse(results);
+				try { var objResults = JSON.parse(results); } catch {}
 				console.log("OBJECT RESULTS:" + objResults);
 				console.log("LINK SHOULD BE HERE : " + objResults.link);
 				console.log("LINK SHOULD BE HERE 222222222: " + results.link);
