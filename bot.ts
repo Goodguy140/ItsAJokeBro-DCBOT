@@ -98,6 +98,7 @@ client.on('interactionCreate', async (interaction: Interaction) => {
 				url = results.link;
 			  });
 		}
+		url = "https://www.youtube.com/watch?v=AeUeLzBO0go";
 		
 
 		// If a connection to the guild doesn't already exist and the user is in a voice channel, join that channel
